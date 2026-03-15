@@ -9,10 +9,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy dependency file
-COPY requirements.txt .
-
-# Install Python dependencies
+# Copy requirements and install Python dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 
@@ -29,17 +27,15 @@ RUN useradd --create-home --shell /bin/bash --uid 1001 app
 
 WORKDIR /app
 
-# Copy installed Python packages from builder
+# Copy installed packages from builder stage
 COPY --from=builder /root/.local /home/app/.local
 ENV PATH=/home/app/.local/bin:$PATH
 
 # Copy backend application
 COPY backend/ ./
 
-# Create required directories including database directory
-RUN mkdir -p /app/instance \
-    && mkdir -p /app/instance/uploads/trade_licenses \
-    && mkdir -p /app/logs \
+# Create necessary directories
+RUN mkdir -p instance/uploads/trade_licenses logs \
     && chown -R app:app /app
 
 # Switch to non-root user
@@ -56,5 +52,23 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 CMD curl -f http://localhost:5000/health || exit 1
 
-# Start Flask with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--threads", "2", "--timeout", "120", "wsgi:app"]
+# Run with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--threads", "2", "--worker-class", "sync", "--max-requests", "1000", "--max-requests-jitter", "50", "--timeout", "120", "wsgi:app"]
+
+# Create instance directory for database
+RUN mkdir -p instance/uploads/trade_licenses
+
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+USER app
+
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+# Run with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "wsgi:app"]
