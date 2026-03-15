@@ -24,22 +24,25 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app user
+# Create application user
 RUN useradd --create-home --shell /bin/bash --uid 1001 app
 
 WORKDIR /app
 
-# Copy installed Python packages
+# Copy installed Python packages from builder
 COPY --from=builder /root/.local /home/app/.local
 ENV PATH=/home/app/.local/bin:$PATH
 
 # Copy backend application
 COPY backend/ ./
 
-# Create required directories
-RUN mkdir -p instance/uploads/trade_licenses logs \
+# Create required directories including database directory
+RUN mkdir -p /app/instance \
+    && mkdir -p /app/instance/uploads/trade_licenses \
+    && mkdir -p /app/logs \
     && chown -R app:app /app
 
+# Switch to non-root user
 USER app
 
 # Environment variables
