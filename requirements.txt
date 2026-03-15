@@ -1,0 +1,23 @@
+flask>=2.3
+flask-cors>=4.0
+flask-sqlalchemy>=3.0
+flask-limiter>=3.5
+sqlalchemy>=2.0
+itsdangerous>=2.1
+cryptography>=40.0
+werkzeug>=2.2
+python-dotenv>=1.0
+psycopg2-binary>=2.9
+gunicorn>=21.0
+
+# Development dependencies
+pytest>=7.0
+pytest-cov>=4.0
+
+# Optional/unused (can be removed in production)
+# fastapi
+# uvicorn
+# motor
+# pydantic
+# email-validator
+# starlette
