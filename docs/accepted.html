@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accepted Requests | Mango Market</title>
-    <link rel="stylesheet" href="../css/farmer.css">
+    <link rel="stylesheet" href="css/farmer.css">
     <style>
         .back-link { margin: 12px 0; display: inline-block; }
         .accepted-table th, .accepted-table td { padding: 10px; text-align: left; }
@@ -56,7 +56,7 @@
         </div>
     </footer>
 
-    <script src="../js/api.js"></script>
+    <script src="js/api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const table = document.getElementById('acceptedTableBody');
@@ -99,7 +99,7 @@
             document.getElementById('logoutBtn').addEventListener('click', async (ev) => {
                 ev.preventDefault();
                 try { await fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (err) { }
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
             });
         });
     </script>

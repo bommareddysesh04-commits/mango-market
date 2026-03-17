@@ -597,7 +597,7 @@ const AuthManager = {
         
         // Redirect to home
         alert('You have been logged out.');
-        window.location.href = 'home.html';
+        window.location.href = 'index.html';
     }
 };
 let isEmailVerified = false;

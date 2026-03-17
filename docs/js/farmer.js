@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('farmer_token');
         localStorage.removeItem('user_name');
         // Redirect to home or login
-        window.location.href = 'home.html';
+        window.location.href = 'index.html';
     });
 
     // ================= FUNCTIONS =================

@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 localStorage.removeItem('role');
                 localStorage.removeItem('role_id');
                 localStorage.removeItem('user_name');
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
             });
         }
     } catch (e) { /* silent */ }
