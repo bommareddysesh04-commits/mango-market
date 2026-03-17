@@ -3426,9 +3426,12 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
     # FRONTEND STATIC FILES SERVING
     # =====================================================
     @app.route('/', methods=['GET'])
-    def index():
-        """Serve home page"""
-        return send_from_directory(os.path.join(app.root_path, '..', 'frontend', 'html'), 'home.html')
+    def home():
+        return {
+            "service": "Mango Market API",
+            "status": "running",
+            "version": "1.0"
+        }
 
     @app.route('/<path:filename>', methods=['GET'])
     def serve_frontend(filename):
