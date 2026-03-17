@@ -7,6 +7,24 @@ window.API_BASE_URL = API_BASE_URL;
 // Expose helper so pages can check backend status & trigger retry
 window.ensureApiReady = () => Promise.resolve(API_BASE_URL);
 
+// Backend availability check
+async function checkBackendStatus() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/health`);
+        if (response.ok) {
+            const data = await response.json();
+            return { available: true, status: data.status };
+        }
+        return { available: false, status: null };
+    } catch (error) {
+        console.error('Backend check failed:', error);
+        return { available: false, status: null };
+    }
+}
+
+// Expose the check function
+window.checkBackendStatus = checkBackendStatus;
+
 // ====== API CLIENT HELPER ======
 const APIClient = {
     getHeaders: function() {
