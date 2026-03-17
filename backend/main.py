@@ -3244,6 +3244,7 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
             'http://127.0.0.1:5000', 'http://127.0.0.1:5500',
             'http://localhost:5000', 'http://localhost:5500',
             'http://127.0.0.1:8000', 'http://localhost:8000', 
+            'https://bommareddysesh04-commits.github.io',  # GitHub Pages frontend
             'null'  # For file:// protocol testing
         ]
     
