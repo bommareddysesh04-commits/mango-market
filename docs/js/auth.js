@@ -152,11 +152,28 @@ document.addEventListener('DOMContentLoaded', () => {
             banner.style.cssText = 'display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); background:#ffcc00; color:#000; padding:10px 16px; border-radius:6px; z-index:9999; box-shadow:0 2px 6px rgba(0,0,0,0.15); font-weight:600;';
             banner.innerHTML = `<span id="backend-status-msg">Checking backend...</span> <button id="backend-retry-btn" style="margin-left:12px;padding:6px 10px;border-radius:4px;border:none;background:#2e7d32;color:#fff;cursor:pointer">Retry</button>`;
             document.body.appendChild(banner);
+            
+            // Initial check
+            (async () => {
+                try {
+                    const status = await (window.checkBackendStatus ? window.checkBackendStatus() : { available: false });
+                    if (status.available) {
+                        banner.style.display = 'none';
+                    } else {
+                        document.getElementById('backend-status-msg').textContent = 'Backend unavailable';
+                        banner.style.display = 'block';
+                    }
+                } catch (e) {
+                    document.getElementById('backend-status-msg').textContent = 'Backend check failed';
+                    banner.style.display = 'block';
+                }
+            })();
+            
             document.getElementById('backend-retry-btn').addEventListener('click', async () => {
                 document.getElementById('backend-status-msg').textContent = 'Checking...';
                 try {
-                    const ok = await (window.ensureApiReady ? window.ensureApiReady() : null);
-                    if (ok) {
+                    const status = await (window.checkBackendStatus ? window.checkBackendStatus() : { available: false });
+                    if (status.available) {
                         document.getElementById('backend-status-msg').textContent = 'Backend available';
                         setTimeout(() => document.getElementById(bannerId).style.display = 'none', 1000);
                     } else {
@@ -167,32 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
-        window.addEventListener('backend:status', (ev) => {
-            const { available } = ev.detail || {};
-            const banner = document.getElementById('backend-status-banner');
-            if (!banner) return;
-            if (!available) {
-                document.getElementById('backend-status-msg').textContent = 'Backend not found on default ports';
-                banner.style.display = 'block';
-            } else {
-                banner.style.display = 'none';
-            }
-        });
-
-        // Kick off an initial probe (non-blocking)
-        (async () => {
-            try {
-                const ok = await (window.ensureApiReady ? window.ensureApiReady() : null);
-                if (!ok) {
-                    const banner = document.getElementById('backend-status-banner');
-                    if (banner) banner.style.display = 'block';
-                }
-            } catch (e) {
-                const banner = document.getElementById('backend-status-banner');
-                if (banner) banner.style.display = 'block';
-            }
-        })();
     })();
 
     // --- REGISTER HANDLERS ---
@@ -343,11 +334,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Send with multipart/form-data
             try {
-                const base = await _ensureApiBase();
-                if (!base) {
-                    result = { success: false, message: 'Cannot reach backend. Make sure the backend server is running.' };
-                } else {
-                    const response = await fetch(`${base}/auth/register`, {
+                const response = await fetch(`${window.API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formDataToSend
+                });
                         method: 'POST',
                         credentials: 'include',
                         body: formDataToSend

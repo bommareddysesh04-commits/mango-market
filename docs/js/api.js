@@ -10,11 +10,14 @@ window.ensureApiReady = () => Promise.resolve(API_BASE_URL);
 // Backend availability check
 async function checkBackendStatus() {
     try {
+        console.log("Checking backend status at:", `${API_BASE_URL}/health`);
         const response = await fetch(`${API_BASE_URL}/health`);
         if (response.ok) {
             const data = await response.json();
+            console.log("Backend status:", data);
             return { available: true, status: data.status };
         }
+        console.error("Backend health check failed:", response.status);
         return { available: false, status: null };
     } catch (error) {
         console.error('Backend check failed:', error);
@@ -34,7 +37,7 @@ const APIClient = {
         };
         const token = localStorage.getItem('session_token');
         if (token) {
-            headers['Authorization'] = 'Bearer ' + token;
+            headers['Authorization'] = `Bearer ${token}`;
         }
         return headers;
     }
@@ -42,12 +45,46 @@ const APIClient = {
 
 // ====== REQUEST HANDLER ======
 async function apiFetch(endpoint, opts = {}) {
-    return fetch(`${API_BASE_URL}${endpoint}`, opts);
+    const url = `${API_BASE_URL}${endpoint}`;
+    console.log("Calling API:", url, opts.method || 'GET');
+
+    const defaultOpts = {
+        headers: APIClient.getHeaders(),
+        credentials: 'include'
+    };
+
+    const finalOpts = { ...defaultOpts, ...opts };
+
+    try {
+        const response = await fetch(url, finalOpts);
+        console.log("API response status:", response.status);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("API error:", response.status, errorText);
+            throw new Error(`API error ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log("API response data:", data);
+        return data;
+    } catch (error) {
+        console.error("API fetch failed:", error);
+        throw error;
+    }
 }
 
 async function postData(endpoint, data) {
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    console.log("Posting to API:", endpoint, data);
+    return apiFetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+}
+
+// Expose functions globally
+window.apiFetch = apiFetch;
+window.postData = postData;
             method: 'POST',
             headers: APIClient.getHeaders(),
             credentials: 'include',

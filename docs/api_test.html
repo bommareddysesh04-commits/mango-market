@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connectivity Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>API Connectivity Test</h1>
+    <p>Testing connection between GitHub Pages frontend and Render backend</p>
+
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testBackendStatus()">Test Backend Status Check</button>
+    <button onclick="testAPIFetch()">Test API Fetch</button>
+
+    <div id="results"></div>
+
+    <script src="js/api.js"></script>
+    <script>
+        function addResult(message, isSuccess = true) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${isSuccess ? 'success' : 'error'}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch('https://mango-market-qssw.onrender.com/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(`Health check successful: ${JSON.stringify(data)}`);
+                } else {
+                    addResult(`Health check failed: ${response.status}`, false);
+                }
+            } catch (error) {
+                addResult(`Health check error: ${error.message}`, false);
+            }
+        }
+
+        async function testBackendStatus() {
+            try {
+                const status = await window.checkBackendStatus();
+                addResult(`Backend status check: ${status.available ? 'Available' : 'Unavailable'} (${status.status || 'no status'})`);
+            } catch (error) {
+                addResult(`Backend status check error: ${error.message}`, false);
+            }
+        }
+
+        async function testAPIFetch() {
+            try {
+                const response = await apiFetch('/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(`API fetch successful: ${JSON.stringify(data)}`);
+                } else {
+                    addResult(`API fetch failed: ${response.status}`, false);
+                }
+            } catch (error) {
+                addResult(`API fetch error: ${error.message}`, false);
+            }
+        }
+    </script>
+</body>
+</html>

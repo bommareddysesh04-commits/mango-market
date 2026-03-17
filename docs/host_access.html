@@ -201,7 +201,7 @@
             } catch (error) {
                 console.error('[Host Access] Error verifying password:', error);
                 if (errorMsg) {
-                    errorMsg.textContent = `Error: ${error.message}. Please check if backend is running on http://127.0.0.1:5000`;
+            errorMsg.textContent = `Error: ${error.message}. Please check if backend is running.`;
                     errorMsg.style.display = 'block';
                 }
             }
