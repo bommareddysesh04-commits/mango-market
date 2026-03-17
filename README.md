@@ -28,6 +28,7 @@ mango-market-platform/
 │   ├── app.py                 # Main application factory
 │   ├── main.py                # Application routes and logic
 │   ├── config.py              # Configuration management
+│   ├── requirements.txt       # Python dependencies
 │   ├── routes/                # Blueprint routes
 │   ├── utils/                 # Utility functions
 │   └── instance/              # Instance-specific data
@@ -44,7 +45,6 @@ mango-market-platform/
 ├── nginx.conf                 # Nginx configuration
 ├── Dockerfile                 # Docker container config
 ├── gunicorn_config.py         # Gunicorn server config
-├── requirements.txt           # Python dependencies
 ├── start_production.sh        # Production startup script
 └── DEPLOYMENT.md              # Deployment guide
 ```
@@ -61,6 +61,7 @@ mango-market-platform/
 
 2. **Install dependencies:**
    ```bash
+   cd backend
    pip install -r requirements.txt
    ```
 

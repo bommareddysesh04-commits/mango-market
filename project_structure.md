@@ -4,14 +4,12 @@ This document contains the complete file and folder structure of the mango-marke
 
 ## Root Directory Files
 - .env
-- requirements.txt
 
 ## Directory Tree
 
 ```
 mango-market-platform/
 ├── .env
-├── requirements.txt
 ├── .venv/
 │   └── (Python virtual environment - detailed structure below)
 ├── backend/
@@ -22,6 +20,7 @@ mango-market-platform/
 │   ├── email_service.py
 │   ├── encryption_utils.py
 │   ├── main.py
+│   ├── requirements.txt
 │   ├── manage_db.py
 │   ├── notification_utils.py
 │   ├── send_test_otp_cli.py
