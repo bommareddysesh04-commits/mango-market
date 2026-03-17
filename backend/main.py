@@ -112,8 +112,15 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'mango_market_secure_key_2026'
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+    # Create instance directory if it doesn't exist
+    INSTANCE_DIR = os.path.join(BASE_DIR, "instance")
+    os.makedirs(INSTANCE_DIR, exist_ok=True)
+
+    # Database path
+    DATABASE_PATH = os.path.join(INSTANCE_DIR, "database.db")
+
     # Database Configuration - Support both SQLite (dev) and PostgreSQL (prod)
-    DATABASE_URL = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(BASE_DIR, '../instance/database.db')
+    DATABASE_URL = os.environ.get('DATABASE_URL') or f'sqlite:///{DATABASE_PATH}'
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -3481,6 +3488,8 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
     # STARTUP SUMMARY
     # =====================================================
     with app.app_context():
+        print("Starting Mango Market Platform...")
+        print("Database path:", app.config['SQLALCHEMY_DATABASE_URI'])
         print("\n" + "="*80)
         print("🥭 MANGO MARKET PLATFORM - SERVER STARTUP COMPLETE")
         print("="*80)
