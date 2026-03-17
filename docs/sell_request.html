@@ -796,7 +796,7 @@ const SellRequestManager = {
     filteredRequests: [],
     currentRequestId: null,
     API_BASE: typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 
-              (window.location.protocol + '//' + window.location.hostname + ':5000'),
+              'https://mango-market-qssw.onrender.com',
 
     async init() {
         console.log('🚀 Initializing Sell Request Manager...');

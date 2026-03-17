@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         BROKER_CONFIG.API_BASE = window.API_BASE_URL;
     } else if (typeof window.ensureApiReady === 'function') {
         const base = await window.ensureApiReady();
-        BROKER_CONFIG.API_BASE = base || (window.location.protocol + '//' + window.location.hostname + ':5000');
+        BROKER_CONFIG.API_BASE = base || 'https://mango-market-qssw.onrender.com';
     } else {
-        BROKER_CONFIG.API_BASE = window.location.protocol + '//' + window.location.hostname + ':5000';
+        BROKER_CONFIG.API_BASE = 'https://mango-market-qssw.onrender.com';
     }
     window.BROKER_CONFIG = BROKER_CONFIG;
 });

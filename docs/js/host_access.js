@@ -1,4 +1,4 @@
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = window.API_BASE_URL || 'https://mango-market-qssw.onrender.com';
 
 // Setup event listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -73,7 +73,7 @@ async function verifyHostAccess() {
     } catch (error) {
         console.error('[Host Access] Error verifying password:', error);
         if (errorMsg) {
-            errorMsg.textContent = `Error: ${error.message}. Please check if backend is running on http://127.0.0.1:5000`;
+            errorMsg.textContent = `Error: ${error.message}. Please check if backend is running.`;
             errorMsg.style.display = 'block';
         }
     }

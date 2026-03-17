@@ -17,9 +17,9 @@ const TransactionManager = {
                     this.API_BASE = window.API_BASE_URL;
                 } else if (typeof window.ensureApiReady === 'function') {
                     const base = await window.ensureApiReady();
-                    this.API_BASE = base || (window.location.protocol + '//' + window.location.hostname + ':5000');
+                    this.API_BASE = base || 'https://mango-market-qssw.onrender.com';
                 } else {
-                    this.API_BASE = window.location.protocol + '//' + window.location.hostname + ':5000';
+                    this.API_BASE = 'https://mango-market-qssw.onrender.com';
                 }
             }
             

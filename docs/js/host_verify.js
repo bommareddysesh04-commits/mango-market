@@ -3,7 +3,7 @@
  * Handles password verification and broker approval/rejection workflow
  */
 
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = window.API_BASE_URL || 'https://mango-market-qssw.onrender.com';
 let currentUserRole = '';
 
 // ============================================
@@ -141,7 +141,7 @@ async function verifyHostAccess() {
     } catch (error) {
         console.error('[Host Verify] ❌ Error verifying password:', error);
         if (errorMsg) {
-            errorMsg.textContent = `Error: ${error.message}. Please check if backend is running on http://127.0.0.1:5000`;
+            errorMsg.textContent = `Error: ${error.message}. Please check if backend is running.`;
             errorMsg.style.display = 'block';
         }
     }

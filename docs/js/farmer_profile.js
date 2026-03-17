@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Resolve API base via shared api.js helper when available
-    let API_BASE = 'http://127.0.0.1:5000';
+    let API_BASE = 'https://mango-market-qssw.onrender.com';
     try {
         if (window.API_BASE_URL) {
             API_BASE = window.API_BASE_URL;

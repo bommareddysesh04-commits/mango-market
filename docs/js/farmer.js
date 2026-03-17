@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use global API_BASE_URL from api.js (don't redefine it)
     // Just verify it exists
     if (typeof API_BASE_URL === 'undefined') {
-        window.API_BASE_URL = window.location.protocol + '//' + window.location.hostname + ':5000';
+        window.API_BASE_URL = 'https://mango-market-qssw.onrender.com';
     }
 
     console.log("Farmer.js initialized with API_BASE_URL:", API_BASE_URL);
