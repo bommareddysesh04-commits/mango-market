@@ -3411,12 +3411,11 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
 
     # Lightweight health endpoint for availability checks
     @app.route('/health', methods=['GET'])
-    def health_check():
-        return jsonify({
-            'status': 'ok',
-            'service': 'mango-market-platform',
-            'timestamp': datetime.now(timezone.utc).isoformat()
-        }), 200
+    def health():
+        return {
+            "status": "running",
+            "service": "Mango Market API"
+        }
 
     # Register top-level accept endpoint to match requested API: PUT /sell-request/:id/accept
     # This route enforces broker auth inside the handler
